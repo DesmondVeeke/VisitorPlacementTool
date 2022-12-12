@@ -9,6 +9,7 @@ namespace Logic.Models.Visitors
         public int GroupNumber;
         public bool Seated = false;
 
+        //Possible parameter Event.StartDate;
         public bool OlderThan12()
         {
             bool flag = false;

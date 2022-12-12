@@ -52,7 +52,9 @@ namespace UnitTesting
             {
                 Assert.AreEqual(children, group.ChildrenToSeat());
             }
-            
+            Assert.AreEqual(groups, testList.Groups.Count());
+            Assert.AreEqual(signups, testList.Individuals.Count());
+
         }
 
         [TestMethod]
@@ -78,6 +80,7 @@ namespace UnitTesting
                 Assert.AreEqual(children, group.ChildrenToSeat());
             }
             Assert.AreEqual(groups, testList.Groups.Count());
+            Assert.AreEqual(signups, testList.Individuals.Count());
 
         }
     }

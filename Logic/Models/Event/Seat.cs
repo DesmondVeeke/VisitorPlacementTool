@@ -9,7 +9,7 @@ namespace Logic.Models.Event
 {
     public class Seat
     {
-        Visitor? visitor = null;
+        public Visitor? visitor = null;
 
         public string? seatID = null;
 

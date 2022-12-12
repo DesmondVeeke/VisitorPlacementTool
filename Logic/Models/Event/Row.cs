@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Logic.Models.Visitors;
 
 namespace Logic.Models.Event
 {
     public class Row
     {
-        List<Seat> seats = new List<Seat>();
+        public List<Seat> seats = new List<Seat>();
 
         public int Number = 1;
 
@@ -20,6 +21,8 @@ namespace Logic.Models.Event
 
         public bool IsFull = false;
 
+        public bool NextRequiresChild = true;
+
         public Row(List<Seat> seats, int number, bool childFriendlyRow, bool isFull)
         {
             this.seats = seats;
@@ -28,16 +31,22 @@ namespace Logic.Models.Event
             IsFull = isFull;
         }
 
-        public Row(int numberofSeats, string fieldLetter) 
+        public Row(int numberofSeats, string fieldLetter, int rowNumber) 
         {
             List<Seat> seats = new List<Seat>();
 
             this.FieldLetter = fieldLetter;
+            this.Number = rowNumber;
+            this.SeatCapacity = numberofSeats;
 
             for(int i = 0; i < numberofSeats; i++)
             {
                 Seat seat = new Seat((FieldLetter + Number.ToString() + i));
                 this.seats.Add(seat);
+            }
+            if(rowNumber == 1)
+            {
+                ChildFriendlyRow = true;
             }
 
         }
@@ -47,6 +56,22 @@ namespace Logic.Models.Event
             seats.Add(seat);
             return true;
         }
+
+        public bool AddVisitor(Visitor visitor)
+        {
+            bool success = false;
+            foreach(Seat seat in seats)
+            {
+                if (!seat.IsFull())
+                {
+                    seat.visitor = visitor;
+                    success = true;
+                    break;
+                }
+            }
+            return success;
+        }
+        
 
         public int EmptySeats()
         {
@@ -84,9 +109,75 @@ namespace Logic.Models.Event
             return full;
         }
 
-        public bool CanFitChildren()
+        public bool CanFitChild()
         {
-            return this.ChildFriendlyRow;
+            bool canFitChild = false;
+            var visitorCount = seats.Count();
+            visitorCount--;
+
+            if (seats[visitorCount].visitor!= null)
+            {
+                return false;
+            }
+
+            if (this.ChildFriendlyRow)
+            {
+                if (!seats[0].IsFull())
+                {
+                    canFitChild = true;
+                }
+                else if(this.seats.Count() % 2 == 0)
+                {
+                    bool even = true;
+                    canFitChild = NextSeatNeedsChildOrAdult(even);
+                }
+                else
+                {
+                    bool uneven = false;
+                    canFitChild = NextSeatNeedsChildOrAdult(uneven);
+                }
+            }
+            return canFitChild;
         }
+
+        private bool NextSeatNeedsChildOrAdult(bool Even)
+        {
+            int placeID = 0;
+            bool childNeeded = true;
+            int cycleCount = 0;
+            
+
+            for (int i = 0; i < seats.Count(); i++)
+            {
+                if (!seats[i].IsFull())
+                {
+                    break;
+                }
+                
+                if (seats[i].IsFull())
+                {
+                    placeID++;
+                }
+                
+                if(placeID == 3)
+                {
+                    placeID = 0;
+                    cycleCount++;
+                    if(cycleCount == 3 && Even)
+                    {
+                        placeID = 1;
+                    }
+                }
+
+            }
+            if(placeID == 1)
+            {
+                childNeeded = false;
+            }
+            return childNeeded;
+        }
+
+
+
     }
 }

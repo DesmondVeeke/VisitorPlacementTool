@@ -8,6 +8,55 @@ namespace Logic.Models.Event
 {
     public class ArrangementModel
     {
+        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
+
         public List<Field> fields = new List<Field>();
+
+
+        public void CreateFullSizeFields(int fieldNumber)
+        {
+            int rowDepth = 3;
+
+            if (fieldNumber == 0)
+            {
+                return;
+            }
+            for (int i = 0; i < fieldNumber; i++)
+            {
+                Field field = new Field(GetLetter());;
+
+                for(int j = 0; j < rowDepth; j++)
+                {
+                    field.RowDepth = rowDepth;
+                    field.AddRow(10);
+                }
+
+                fields.Add(field);
+            }
+        }
+
+        public void CreateField(int numberOfRows, int seatsPerRow)
+        {
+            int rowDepth = numberOfRows;
+
+            Field field = new Field(GetLetter());
+
+            for(int i = 0; i < rowDepth; i++)
+            {
+                field.RowDepth = rowDepth;
+                field.AddRow(seatsPerRow);
+            }
+
+            fields.Add(field);
+        }
+
+        private string GetLetter()
+        {
+            string letter = "";
+
+            letter = alphabet[(fields.Count())].ToString();
+
+            return letter;
+        }
     }
 }

@@ -26,14 +26,13 @@ namespace Logic.Placement
 
             sortedList.Groups = groupList;
             sortedList.Individuals = visitorList.Individuals;
-            
 
             return sortedList;
         }
 
 
 
-        public List<Group> ChildrenFirst(VisitorList visitorList)
+        public List<Group> ChildrenInGroupsFirst(VisitorList visitorList)
         {
 
             List<Group> sortedList = visitorList.Groups;
@@ -48,30 +47,36 @@ namespace Logic.Placement
             return sortedList;
         }
 
+        public List<Visitor> ChildrenOnly(VisitorList visitorList)
+        {
+            List<Visitor> sortedList = visitorList.Individuals;
+
+            sortedList = sortedList.Where(o => !o.OlderThan12()).ToList();
+
+            return sortedList;
+        }
+
+        public List<Visitor> AdultsOnly(VisitorList visitorList)
+        {
+            List<Visitor> sortedList = visitorList.Individuals;
+
+            sortedList = sortedList.Where(o => o.OlderThan12()).ToList();
+
+            return sortedList;
+        }
+
+
+
         public VisitorList OptimalList(VisitorList visitorList)
         {
             VisitorList optimalList = new VisitorList();
 
             optimalList = FormGroups(visitorList);
 
-            optimalList.Groups = ChildrenFirst(optimalList);
+            optimalList.Groups = ChildrenInGroupsFirst(optimalList);
 
             return optimalList;
         }
-
-        public int ChildrenLeft(List<Group> groups)
-        {
-            int childCount = 0;
-
-            foreach (Group group in groups)
-            {
-                childCount = childCount + group.ChildrenToSeat();
-            }
-            return childCount;
-        }
-
-
-
 
         public int GroupsLeft(VisitorList visitorList)
         {
@@ -117,7 +122,6 @@ namespace Logic.Placement
 
                 groups.Add(group);
             }
-
             return groups;
         }
     }

@@ -19,7 +19,7 @@ namespace Logic.Models.Visitors
         {
             bool visitorsLeft = false;
 
-            foreach (Group group in Groups)
+            foreach (Group group in this.Groups)
             {
                 if(group.Members.Count() > 0)
                 {
@@ -32,6 +32,34 @@ namespace Logic.Models.Visitors
             }
 
             return visitorsLeft;
+        }
+
+        public bool ChildrenToPlace()
+        {
+            var childrenLeft = ChildrenLeftToPlace();
+
+            if(childrenLeft == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public int ChildrenLeftToPlace()
+        {
+            int children = 0;
+            foreach(Visitor visitor in Individuals)
+            {
+                if (!visitor.OlderThan12())
+                {
+                    children++;
+                }
+            }
+            this.Children = children;
+            return children;
         }
     }
 }
