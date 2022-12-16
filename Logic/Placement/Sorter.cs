@@ -11,10 +11,6 @@ namespace Logic.Placement
 {
     public class Sorter
     {
-        public VisitorList VisitorList = new VisitorList();
-
-        public VisitorList SortedList = new VisitorList();
-
         public VisitorList FormGroups(VisitorList visitorList)
         {
 

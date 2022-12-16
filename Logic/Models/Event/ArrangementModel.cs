@@ -15,6 +15,11 @@ namespace Logic.Models.Event
 
         public void CreateFullSizeFields(int fieldNumber)
         {
+            if(fieldNumber == 0)
+            {
+                return;
+            }
+
             int rowDepth = 3;
 
             if (fieldNumber == 0)
@@ -57,6 +62,11 @@ namespace Logic.Models.Event
             letter = alphabet[(fields.Count())].ToString();
 
             return letter;
+        }
+
+        public void AddRemainder(List<Field> remainingFields)
+        { 
+            this.fields.AddRange(remainingFields);
         }
     }
 }

@@ -21,6 +21,7 @@ namespace Logic.Models.Event
 
         public int RowsAdded = 0;
 
+        public int Capacity { get { return RowDepth * RowWidth;} }
 
         public Field(List<Row> rows, string fieldLetter, bool full)
         {
@@ -71,6 +72,19 @@ namespace Logic.Models.Event
             return success;
         }
 
+        public bool AddSeatToEachRow()
+        {
+            bool success = false;
+
+            foreach(Row row in rows)
+            {
+                row.AddSeat();
+                success = true;
+            }
+            this.RowWidth = this.RowWidth + 1;
+            return success;
+        }
+
         public bool NeedsChild()
         {
             bool needsChild = false;
@@ -90,13 +104,14 @@ namespace Logic.Models.Event
         {
             foreach(Row row in rows)
             {
-                if (row.NextRequiresChild && !row.SayIfFull())
+                if (row.CanFitChild())
                 {
                     childVisitor.Seated = true;
                     row.AddVisitor(childVisitor);
                     break;
                 }
             }
+            SayIfFull();
         }
 
         public void AddAdult(Visitor adultVisitor)
@@ -110,17 +125,7 @@ namespace Logic.Models.Event
                     break;
                 }
             }
-        }
-
-        public List<int> RowsWithEmptySeats()
-        {
-            List<int> suitableRows = new List<int>();
-
-            foreach(Row row in this.rows)
-            {
-                suitableRows.Add(row.EmptySeats());
-            }
-            return suitableRows;
+            SayIfFull();
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Logic.Models.Visitors
             int children = 0;
             foreach(Visitor visitor in Individuals)
             {
-                if (!visitor.OlderThan12())
+                if (!visitor.OlderThan12() && !visitor.Seated)
                 {
                     children++;
                 }

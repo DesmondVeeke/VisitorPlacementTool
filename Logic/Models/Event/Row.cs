@@ -21,8 +21,6 @@ namespace Logic.Models.Event
 
         public bool IsFull = false;
 
-        public bool NextRequiresChild = true;
-
         public Row(List<Seat> seats, int number, bool childFriendlyRow, bool isFull)
         {
             this.seats = seats;
@@ -41,7 +39,7 @@ namespace Logic.Models.Event
 
             for(int i = 0; i < numberofSeats; i++)
             {
-                Seat seat = new Seat((FieldLetter + Number.ToString() + i));
+                Seat seat = new Seat((FieldLetter + "-" + Number.ToString()+ "-" + i));
                 this.seats.Add(seat);
             }
             if(rowNumber == 1)
@@ -51,8 +49,9 @@ namespace Logic.Models.Event
 
         }
 
-        public bool AddSeat(Seat seat)
+        public bool AddSeat()
         {
+            Seat seat = new Seat((FieldLetter + "-" + Number.ToString() + "-" + seats.Count()));
             seats.Add(seat);
             return true;
         }
@@ -113,9 +112,9 @@ namespace Logic.Models.Event
         {
             bool canFitChild = false;
             var visitorCount = seats.Count();
-            visitorCount--;
 
-            if (seats[visitorCount].visitor!= null)
+
+            if (seats[visitorCount - 1].visitor!= null)
             {
                 return false;
             }

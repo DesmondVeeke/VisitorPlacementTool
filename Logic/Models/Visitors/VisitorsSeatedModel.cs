@@ -7,7 +7,7 @@ using Logic.Models.Event;
 
 namespace Logic.Models.Visitors
 {
-    public class SeatedVisitorModel
+    public class VisitorsSeatedModel
     {
         public List<Field> fields = new List<Field>();
         public void AddField(Field field)

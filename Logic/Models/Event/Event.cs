@@ -11,10 +11,10 @@ namespace Logic.Models.Event
     {
         public DateTime StartDate { get; set; }
         public int Capacity { get; set; }
-        public List<Visitor> signups { get; set; }
+        public VisitorList signups { get; set; }
 
 
-        public Event(DateTime startDate, int capacity, List<Visitor> visitors)
+        public Event(DateTime startDate, int capacity, VisitorList visitors)
         {
             StartDate = startDate;
             Capacity = capacity;

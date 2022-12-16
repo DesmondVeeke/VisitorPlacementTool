@@ -10,10 +10,9 @@ namespace Logic.Placement
 {
     public class Placer
     {
-
-        public SeatedVisitorModel SeatVisitors(VisitorList visitorList, ArrangementModel arrangementModel)
+        public VisitorsSeatedModel SeatVisitors(VisitorList visitorList, ArrangementModel arrangementModel)
         {
-            SeatedVisitorModel seatedVisitorModel = new SeatedVisitorModel();
+            VisitorsSeatedModel seatedVisitorModel = new VisitorsSeatedModel();
 
 
             Sorter sorter = new Sorter();
@@ -22,21 +21,17 @@ namespace Logic.Placement
 
             var adults = sorter.AdultsOnly(visitorList);
 
-            foreach(Field field in arrangementModel.fields)
+            var nextChild = children.FirstOrDefault();
+
+            var nextAdult = adults.FirstOrDefault();
+
+
+            foreach (Field field in arrangementModel.fields)
             {
                 var totalToPlace = (field.RowDepth * field.RowWidth);
 
-                while(totalToPlace> 0)
+                while(totalToPlace> 0 && nextAdult != null)
                 {
-                    var nextChild = children.FirstOrDefault();
-
-                    var nextAdult = adults.FirstOrDefault();
-
-                    if(nextAdult == null)
-                    {
-                        break;
-                    }
-
                     if (field.NeedsChild() && visitorList.ChildrenLeftToPlace() > 0)
                     {
                         field.AddChild(nextChild);
@@ -49,6 +44,10 @@ namespace Logic.Placement
                         adults.Remove(nextAdult);
                         totalToPlace--;
                     }
+
+                    nextChild = children.FirstOrDefault();
+
+                    nextAdult = adults.FirstOrDefault();
                 }
                 seatedVisitorModel.AddField(field);
             }

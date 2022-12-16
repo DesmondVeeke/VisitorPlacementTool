@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace UnitTesting
 {
     [TestClass]
-    public class SeatedVisitorModelTests
+    public class VisitorsSeatedModelTests
     {
 
         [TestMethod]
@@ -141,6 +141,106 @@ namespace UnitTesting
 
             Assert.AreEqual(1, totalVisitorCount);
             Assert.IsTrue(allSeated);
+        }
+
+        [TestMethod]
+
+        public void PlaceVisitors150Adult30Children_Success()
+        {
+            //Arrange
+            Populator populator = new Populator();
+
+            VisitorList visitorList = populator.Create(200, 30);
+
+            SeatArranger seatArranger = new SeatArranger();
+
+            ArrangementModel arrangement = seatArranger.ArrangeSeating(visitorList);
+
+            Placer placer = new Placer();
+
+            //Act
+            var seatedVisitorModel = placer.SeatVisitors(visitorList, arrangement);
+
+
+            //Assert
+            var totalVisitorCount = 0;
+            var totalChildrenCount = 0;
+            bool allSeated = true;
+
+
+            foreach (Field field in seatedVisitorModel.fields)
+            {
+                foreach (Row row in field.rows)
+                {
+                    foreach (Seat seat in row.seats)
+                    {
+                        if (seat.visitor != null)
+                        {
+                            totalVisitorCount++;
+                            allSeated = seat.visitor.Seated;
+
+                            if (!seat.visitor.OlderThan12())
+                            {
+                                totalChildrenCount++;
+                            }
+                        }
+                    }
+                }
+            }
+
+            Assert.AreEqual(200, totalVisitorCount);
+            Assert.AreEqual(30, totalChildrenCount);
+            Assert.IsTrue(allSeated);
+        }
+
+        [TestMethod]
+
+        public void PlaceVisitors150Adult50Children_Success()
+        {
+            //Arrange
+            Populator populator = new Populator();
+
+            VisitorList visitorList = populator.Create(200, 50);
+
+            SeatArranger seatArranger = new SeatArranger();
+
+            ArrangementModel arrangement = seatArranger.ArrangeSeating(visitorList);
+
+            Placer placer = new Placer();
+
+            //Act
+            var seatedVisitorModel = placer.SeatVisitors(visitorList, arrangement);
+
+
+            //Assert
+            var totalVisitorCount = 0;
+            var totalChildrenCount = 0;
+            bool allSeated = true;
+
+
+            foreach (Field field in seatedVisitorModel.fields)
+            {
+                foreach (Row row in field.rows)
+                {
+                    foreach (Seat seat in row.seats)
+                    {
+                        if (seat.visitor != null)
+                        {
+                            totalVisitorCount++;
+                            allSeated = seat.visitor.Seated;
+
+                            if (!seat.visitor.OlderThan12())
+                            {
+                                totalChildrenCount++;
+                            }
+                        }
+                    }
+                }
+            }
+
+            Assert.IsTrue(allSeated);
+            Assert.AreEqual(200, totalVisitorCount);
+            Assert.AreEqual(50, totalChildrenCount);
         }
     }
 }

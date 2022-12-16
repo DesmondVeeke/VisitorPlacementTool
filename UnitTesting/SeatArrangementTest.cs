@@ -101,5 +101,90 @@ namespace UnitTesting
             Assert.AreEqual(1, arrangement.fields.Count());
             Assert.AreEqual(5, arrangement.fields[0].rows[0].seats.Count());
         }
+
+        [TestMethod]
+
+        public void CreateArrangement_200Adults50Children_Success()
+        {
+            //Arrange
+
+            Populator populator = new Populator();
+
+            VisitorList visitorList = populator.Create(200, 50);
+
+            SeatArranger arranger = new SeatArranger();
+
+            //Act
+
+            var arrangement = arranger.ArrangeSeating(visitorList);
+
+            //Assert
+
+            var totalSeats = 0;
+            foreach(Field field in arrangement.fields)
+            {
+                foreach(Row row in field.rows)
+                {
+                    totalSeats += row.SeatCapacity;
+                }
+            }
+
+            Assert.AreEqual(10, arrangement.fields.Count());
+            Assert.IsTrue(totalSeats >= 200);
+
+        }
+
+        [TestMethod]
+
+        public void CreateArrangement_232Adults17Children_Success()
+        {
+            //Arrange
+
+            Populator populator = new Populator();
+
+            VisitorList visitorList = populator.Create(232, 17);
+
+            SeatArranger arranger = new SeatArranger();
+
+            //Act
+
+            var arrangement = arranger.ArrangeSeating(visitorList);
+
+            //Assert
+            var totalSeats = 0;
+            foreach (Field field in arrangement.fields)
+            {
+                foreach (Row row in field.rows)
+                {
+                    totalSeats += row.SeatCapacity;
+                }
+            }
+
+            Console.WriteLine("Debug");
+
+            Assert.AreEqual(8, arrangement.fields.Count());
+        }
+
+
+        [TestMethod]
+
+        public void CreateArrangement_30Adults50Children_Success()
+        {
+            //Arrange
+
+            Populator populator = new Populator();
+
+            VisitorList visitorList = populator.Create(80, 50);
+
+            SeatArranger arranger = new SeatArranger();
+
+            //Act
+
+            var arrangement = arranger.ArrangeSeating(visitorList);
+
+            //Assert
+
+            Assert.AreEqual(9, arrangement.fields.Count());
+        }
     }
 }
